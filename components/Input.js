@@ -8,7 +8,7 @@ import {
   Button,
   StyleSheet,
 } from 'react-native';
-import FlashcardList from './FlashCardList';
+import FlashCardList from './FlashCardList';
 
 export default function Input() {
   const [question, setQuestion] = useState('');
@@ -23,7 +23,24 @@ export default function Input() {
   };
 
   const handleSubmit = () => {
-    setFlashcards([...flashcards, { question, answer }]);
+    // Trim whitespace from the input fields
+    const trimmedQuestion = question.trim();
+    const trimmedAnswer = answer.trim();
+
+    // Check if either the question or the answer is empty
+    if (!trimmedQuestion || !trimmedAnswer) {
+      // Alert the user that both fields are required
+      alert('Both question and answer are required.');
+      return;
+    }
+
+    // Add the flashcard to the list
+    setFlashcards([
+      ...flashcards,
+      { question: trimmedQuestion, answer: trimmedAnswer },
+    ]);
+
+    // Clear the input fields
     setQuestion('');
     setAnswer('');
   };
@@ -33,11 +50,11 @@ export default function Input() {
       <View style={styles.inputContainer}>
         <Text
           style={{
-            fontSize: 28,
+            fontSize: 26,
             marginBottom: 20,
             textAlign: 'center',
           }}>
-          FLASHYY
+          Create and See FlashCards
         </Text>
 
         <Text style={styles.inputLabel}>Enter the Question</Text>
@@ -59,7 +76,7 @@ export default function Input() {
       </View>
       <Button onPress={handleSubmit} title="Submit" style={styles.button} />
       <View style={styles.flashcardListContainer}>
-        <FlashcardList flashcards={flashcards} />
+        <FlashCardList flashcards={flashcards} />
       </View>
     </ScrollView>
   );

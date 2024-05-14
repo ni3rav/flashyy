@@ -1,29 +1,33 @@
-// FlashcardList.js
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+// FlashCardList.js
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const FlashcardList = ({ flashcards }) => {
-  const [visibleAnswerIndex, setVisibleAnswerIndex] = useState(null);
+const FlashCardList = ({ flashcards }) => {
+  const navigation = useNavigation();
 
-  const toggleAnswerVisibility = (index) => {
-    if (visibleAnswerIndex === index) {
-      setVisibleAnswerIndex(null);
-    } else {
-      setVisibleAnswerIndex(index);
-    }
+  const handleFlashcardPress = (flashcard) => {
+    navigation.navigate('FlashCardDetail', { flashcard });
   };
 
   return (
+    // <ScrollView>
+    //   {flashcards.map((flashcard, index) => (
+    //     <TouchableOpacity
+    //       key={index}
+    //       style={styles.flashcard}
+    //       onPress={() => handleFlashcardPress(flashcard)}>
+    //       <Text style={styles.question}>{flashcard.question}</Text>
+    //     </TouchableOpacity>
+    //   ))}
+    // </ScrollView>
     <View>
       {flashcards.map((flashcard, index) => (
         <TouchableOpacity
           key={index}
           style={styles.flashcard}
-          onPress={() => toggleAnswerVisibility(index)}>
+          onPress={() => handleFlashcardPress(flashcard)}>
           <Text style={styles.question}>{flashcard.question}</Text>
-          {visibleAnswerIndex === index && (
-            <Text style={styles.answer}>{flashcard.answer}</Text>
-          )}
         </TouchableOpacity>
       ))}
     </View>
@@ -43,9 +47,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
   },
-  answer: {
-    fontSize: 16,
-  },
 });
 
-export default FlashcardList;
+export default FlashCardList;
